@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ESP32 Flipper UI</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="frame">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">ESP</div>
+        <div class="title">Flipper UI</div>
+      </div>
+      <div class="status" id="status">offline</div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="scan">Skanowanie sieci</button>
+      <button class="tab" data-tab="scripts">Menu skryptów</button>
+      <button class="tab" data-tab="settings">Ustawienia</button>
+    </nav>
+
+    <main class="panel">
+      <!-- SCAN -->
+      <section class="view active" id="view-scan">
+        <div class="card">
+          <div class="card-title">SubGHz: RSSI sweep (CC1101)</div>
+          <div class="grid">
+            <label>Start (Hz)<input id="startHz" value="433050000"></label>
+            <label>Stop (Hz)<input id="stopHz" value="434790000"></label>
+            <label>Step (Hz)<input id="stepHz" value="100000"></label>
+          </div>
+          <div class="row">
+            <button class="px-btn" id="btnSweep">Start sweep</button>
+            <button class="px-btn px-btn-ghost" id="btnClear">Clear</button>
+          </div>
+          <pre class="console" id="scanOut"></pre>
+        </div>
+      </section>
+
+      <!-- SCRIPTS -->
+      <section class="view" id="view-scripts">
+        <div class="card">
+          <div class="card-title">Skrypty (pliki w LittleFS: /scripts)</div>
+
+          <div class="row">
+            <input type="file" id="fileUp"/>
+            <button class="px-btn" id="btnUpload">Upload</button>
+            <button class="px-btn px-btn-ghost" id="btnRefreshScripts">Odśwież</button>
+          </div>
+
+          <div class="hint">
+            Sugerowany format: osobne pliki JSON per model/profil. UI tylko zarządza plikami.
+          </div>
+
+          <div class="list" id="scriptsList"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings">
+        <div class="card">
+          <div class="card-title">Ustawienia Wi‑Fi</div>
+          <div class="grid">
+            <label>SSID<input id="wifiSsid" placeholder="Twoja sieć"></label>
+            <label>Hasło<input id="wifiPass" type="password" placeholder="********"></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Bezpieczeństwo</div>
+          <label class="check">
+            <input type="checkbox" id="requireToken" checked>
+            <span>Wymagaj tokenu (?t=...)</span>
+          </label>
+
+          <div class="row">
+            <input id="macAdd" placeholder="AA:BB:CC:DD:EE:FF">
+            <button class="px-btn" id="btnAddMac">Dodaj MAC</button>
+          </div>
+
+          <div class="list" id="macList"></div>
+
+          <div class="hint">
+            Jeśli whitelist MAC nie jest pusta, klient musi wysyłać nagłówek <code>X-Client-MAC</code>.
+            (Możesz wkleić swój MAC z telefonu/PC). Token ustawiasz w <code>cfg.h</code>.
+          </div>
+
+          <div class="row">
+            <button class="px-btn" id="btnSaveCfg">Zapisz</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>ESP32‑S3 + CC1101 • UI Flipper‑style</div>
+    </footer>
+  </div>
+
+<script src="/app.js"></script>
+</body>
+</html>
